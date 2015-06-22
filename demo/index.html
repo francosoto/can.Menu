@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>can.Menu Demo</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Bootstrap -->
+		<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="demo" class="col-md-4 col-md-offset-1">
+		</div>
+	</body>
+	<script id="bootstrapView" type="text/mustache">
+		<ul class="dropdown-menu">
+			{{#items}}
+			<li>
+				<a>
+					{{nombre}}
+				</a>
+			</li>
+			{{/items}}
+		</ul>
+	</script>
+	<style>
+		/* bootstrapCustomView span color fix */
+		/*.active span {
+			color: #ffffff;
+		}*/
+	</style>
+	<script src='bower_components/steal/steal.js' main='demo'></script>
+</html>
