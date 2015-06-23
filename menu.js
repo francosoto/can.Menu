@@ -33,8 +33,11 @@ steal(
 				// 	minLength:	3
 				// ,	displayKey:	'name'
 				// ,	timeout:	400
-					view:		undefined
-				,	content: 	undefined
+					view:			undefined
+				,	mustache: 		undefined
+				,	content: 		undefined
+				,	routes: 		undefined
+				,	options_menu:	undefined
 				// ,	source:		undefined
 				// ,	query:		{}
 				}
@@ -46,36 +49,47 @@ steal(
 				 * @param {object} Typeahead plugin options. 
 				 */
 				init: function(element, options)
-				{
-					/* Create observables menu's options */
-					
-					this.options_menu
-					=	new can.Map({items: []})
-					
+				{					
+					// this.options_menu
+					// =	new can.Map({items: []})
 
-					can.append(
-						this.$menu
-						=	can.$('<div>')
-								// .css('position','relative')
-								.appendTo(
-									this.element.parent()
-								)
-					,	can.view(
-							this.options.view
-						,	this.options_menu
+					/* Create observables menu's options */
+					this.options_menu
+					=	new can.Map(
+							options.options_menu
+							?	options.options_menu
+							: 	{
+									items:[]
+								}
 						)
-					)
+
+					if(options.view && options.mustache)
+						this._apply_template()
 
 					this.$menu.find('.submenu').hide()
 
 					console.log(this.$menu)
-				
-					// this.$menu.on(
-					// 	{
-					// 		mouseenter:	can.proxy(this.mouseenter,this)
-					// 	,	mouseleave:	can.proxy(this.mouseleave,this)
-					// 	}
-					// )
+				}
+			,	_apply_template: function()
+				{
+					/* View the template / mustache */
+					
+					can.append(
+						this.$menu
+						=	can.$('<div>')
+								.appendTo(
+									this.element.parent()
+								)
+					,	can.view(
+							options.view
+						,	options.options_menu
+						)
+					)					
+				}
+
+			,	_apply_dropdown: function() 
+				{
+
 				}
 
 			,	'.menu > .navegable:not(".active") click': function(el,ev)
