@@ -1,10 +1,10 @@
 {
-	"name": "can.menu",
+	"name": "can.Menu",
 	"version": "0.0.1",
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:francosoto/can.menu.git",
-		"github": "https://github.com/francosoto/can.menu"
+		"url": "git@github.com:francosoto/can.Menu.git",
+		"github": "https://github.com/francosoto/can.Menu"
 	},
 	"licenses": [
 		{

@@ -21,19 +21,18 @@
 		}
 	}());
 
-
 	System
 		.config(
 			{
 				map:
 				{
-					'jquery/jquery':	'jquery'
-				,	'can':				'bower_components/canjs'
+					'jquery/jquery':'jquery'
+				,	'can':'bower_components/canjs'
 				}
 			,	paths:
 				{
-					'jquery':			'bower_components/jquery/dist/jquery.js'
-				,	'typeahead':		'../menu.js'
+					'jquery':'bower_components/jquery/dist/jquery.js'
+				,	'menu':'../menu.js'
 				}
 			,	meta:
 				{
@@ -45,7 +44,7 @@
 				}
 			,	ext:
 				{
-					'ejs':		'can/view/ejs/system'
+					'ejs': 'can/view/ejs/system'
 				,	'mustache':	'can/view/mustache/system'
 				,	'stache':	'can/view/stache/system'
 				}
@@ -58,7 +57,7 @@
 System.buildConfig
 =	{
 		map:
-		{	
+		{
 			'can/util/util':	'can/util/domless/domless'
 		}
 	};

@@ -4,8 +4,7 @@ var	stealTools
 stealTools
 	.build(
 		{
-			main:
-			[
+			main:[
 				'demo'
 			]
 		,	config:	__dirname+'/stealconfig.js'

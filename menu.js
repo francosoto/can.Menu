@@ -10,7 +10,7 @@ steal(
 		/**
 		 * @module {function} lib/menu/ <menu>
 		 * @parent can
-		 * @inherits can.Control 
+		 * @inherits can.Control
 		 */
 		can.Menu = can.Control.extend(
 			{
@@ -26,8 +26,8 @@ steal(
 				 * @option {Number} [minLength] The minimum character length needed before suggestions start getting rendered. Defaults to 3.
 				 * @option {String} [displayKey] The Item key to display. Defaults to name.
 				 * @option {Number} [timeout] The number of miliseconds to wait before requesting a suggestion. Defaults to 400.
-				 * @option {EJS|Mustache|Stache} [view] Typeahead view.
-				 * @option {Array|Object|function(query)} [source] Source data. Array of Objects, Array of Strings. Ajax Object or a function that shoudld return a deferred. 
+				 * @option {EJS|Mustache|Stache} [view] Menu view.
+				 * @option {Array|Object|function(query)} [source] Source data. Array of Objects, Array of Strings. Ajax Object or a function that shoudld return a deferred.
 				 * @option {Object} [query] Extra query to perfom on the request of suggestions.
 				*/
 				// 	minLength:	3
@@ -46,10 +46,10 @@ steal(
 				/**
 				 * Initilalize the menu plugin.
 				 * @param {node} HTML node element where the menu plugin will be initialized.
-				 * @param {object} Typeahead plugin options. 
+				 * @param {object} Menu plugin options.
 				 */
 				init: function(element, options)
-				{					
+				{
 					// this.options_menu
 					// =	new can.Map({items: []})
 
@@ -73,7 +73,7 @@ steal(
 			,	_apply_template: function()
 				{
 					/* View the template / mustache */
-					
+
 					can.append(
 						this.$menu
 						=	can.$('<div>')
@@ -84,10 +84,10 @@ steal(
 							options.view
 						,	options.options_menu
 						)
-					)					
+					)
 				}
 
-			,	_apply_dropdown: function() 
+			,	_apply_dropdown: function()
 				{
 
 				}
@@ -99,7 +99,7 @@ steal(
 					ev.stopPropagation()
 
 					this.change_link(el,ev)
-					
+
 					/*this.newRoute(
 						can.$(el).attr('data-route')
 					)*/

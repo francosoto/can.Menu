@@ -1,10 +1,10 @@
 {
-  "name": "can.menu",
+  "name": "can.Menu",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "git@github.com:francosoto/can.menu.git",
-    "github": "https://github.com/francosoto/can.menu"
+    "url": "git@github.com:francosoto/can.Menu.git",
+    "github": "https://github.com/francosoto/can.Menu"
   },
   "licenses": [
     {
@@ -13,13 +13,12 @@
     }
   ],
   "dependencies": {
-    "canjs": "git://github.com/bitovi/canjs#minor",
-    "steal": "~0.4.0",
-    "jquery": "1.11.2"
-  }
-, "devDependencies":
-  {
-    "bootstrap": "~3.3.1",
+    "canjs": "https://github.com/canjs/canjs.git",
+    "steal": "~0.13.2",
+    "jquery": "2.2.0"
+  },
+  "devDependencies": {
+    "bootstrap": "~3.3.6",
     "funcunit": "~2.0.4"
   }
 }

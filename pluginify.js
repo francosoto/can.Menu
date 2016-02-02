@@ -6,15 +6,15 @@ var	pluginifier
 pluginifier(
 	{
 		config:	__dirname+'/demo/stealconfig.js'
-	,	main:	'typeahead'
+	,	main:	'menu'
 	}
 ).then(
 	function(pluginify)
 	{
 		// Get the main module, ignoring a dependency we don't want.
-		var typeaheadPlugin
+		var menuPlugin
 		=	pluginify(
-				'typeahead'
+				'menu'
 		,	{
 				ignoreAllDependencies:		true
 			,	minify:						true
@@ -26,8 +26,8 @@ pluginifier(
 
 		// writes the pluginified module.
 		fs.writeFileSync(
-			'typeahead.min.js'
-		,	typeaheadPlugin
+			'menu.min.js'
+		,	menuPlugin
 		,	'utf8'
 		)
 	}
