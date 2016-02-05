@@ -1,115 +1,151 @@
 steal(
-		'can/model'
-,		'can/util/fixture'
-,		'can/view/mustache'
-,		'menu.js'
-,		function()
-		{
-			// var	menuArray
-			// =	[
-			// 		{
-			// 			tag:'Home'
-			// 		,	selected: true
-			// 		}
-			// 	,	{
-			// 			tag:'Second Option'
-			// 		,	href: '#'
-			// 		}
-			// 	,	{
-			// 			tag:'Dropdown'
-			// 		,	dropdown: dropdown1
-			// 		}
-			// 	,	{
-			// 			tag:'Fourth Option'
-			// 		}
-			// 	]
-			var	menuArray
-			=	{
-					brand:
-					[
-						{
-							tag:'Home'
-						,	selected: true
-						}
-					]
-				,	left:
-					[
-						{
-							tag:'Second Option'
-						,	href: '#'
-						}
-					,	{
-							tag:'Dropdown'
-						,	dropdown: dropdown1
-						}
-					]
-				,	right:
-					[
-						{
-							tag:'Fourth Option'
-						}
-					]
-				}
-			, 	dropdown1
-			=	[
-					'Action'
-				, 	'Another action'
-				, 	'Something else here'
-				, 	{
-						role: 'separator'
-					, 	'class':'divider'
+	'can/model'
+,	'can/util/fixture'
+,	'can/view/mustache'
+,	'menu.js'
+,	function()
+	{
+		var	menuArray =	{
+				brand: [
+					{
+						tag: 		'Home'
+					,	actived: 	true
+					,	href: 		'#'
 					}
-				, 	'Separated link'
-				,	{
-						role: 'separator'
-					, 	'class':'divider'
-					}
-				, 	'One more separated link'
 				]
-
-			// function filterMenu(query)
-			// {
-			// 	console.log(query)
-			// 	return	can.map(
-			// 				can.grep(
-			// 					menuArray
-			// 				,	function(option)
-			// 					{
-			// 						console.log(option)
-			// 						return	option.toLowerCase().indexOf(query.toLowerCase()) != -1
-			// 					}
-			// 				)
-			// 			,	function(option)
-			// 				{
-			// 					console.log(option)
-			// 					return	{nombre: option}
-			// 				}
-			// 			)
-			// }
-
-			// can.fixture(
-			// 	'POST /menus'
-			// ,	function(req,res)
-			// 	{
-			// 		return	res(
-			// 					200
-			// 				,	'success'
-			// 				,	filterMenu(req.data.query)
-			// 				)
-			// 	}
-			// )
-
-			can.fixture(
-				'GET /menus'
-			,	function(req,res)
+			,	left: [
+					{
+						tag: 		'Second Option'
+					,	href: 		'#/second_option'
+					}
+				,	{
+						tag: 		'Countries'
+					,	dropdown: 	dropdown1
+					}
+				]
+			,	right: [
+					{
+						tag: 		'Fourth Option'
+					,	href: 		'#/other_option'
+					}
+				,	{
+						tag: 		'User X'
+					,	dropdown: 	dropdown2
+					}
+				]
+			}
+		, 	dropdown1 =	[
 				{
-					return	res(
-								200
-							,	'success'
-							// ,	filterMenu(req.data.query)
-							,	menuArray
+					tag: 	'Argentina'
+				,	href: 	'#/argentina'
+				,	icon: 	''
+				}
+			, 	{
+					tag: 	'Uruguay'
+				,	href: 	'#/uruguay'
+				,	icon: 	''
+				}
+			, 	{
+					tag: 	'Colombia'
+				,	href: 	'#/colombia'
+				,	icon: 	''
+				}
+			, 	{
+					tag: 	'Brasil'
+				,	href: 	'#/brasil'
+				,	icon: 	''
+				}
+			]
+		, 	dropdown2 =	[
+				{
+					tag: 	'Config'
+				,	href: 	'#'
+				,	icon: 	''
+				}
+			, 	{
+					tag: 	'Config'
+				,	href: 	'#'
+				,	icon: 	''
+				}
+			, 	{
+					role: 'separator'
+				, 	'class':'divider'
+				}
+			, 	{
+					tag: 	'Config'
+				,	href: 	'#'
+				,	icon: 	''
+				}
+			,	{
+					role: 'separator'
+				, 	'class':'divider'
+				}
+			, 	{
+					tag: 	'Config'
+				,	href: 	'#'
+				,	icon: 	''
+				}
+			]
+
+		can.fixture(
+			'GET /menus'
+		,	function(req,res)
+			{
+				return 	res(
+							200
+						,	'success'
+						,	menuArray
+						)
+			}
+		)
+
+		Menu = can.Model.extend(
+			{
+				get: function(query)
+				{
+					return	can.ajax(
+								{
+									url: '/menus'
+								,	method: 'GET'
+								,	data: query
+								}
 							)
 				}
-			)
+			}
+		,	{	}
+		)
+
+		function dropdown($element) {
+			$element.find('.dropdown-toggle')
+				.dropdown()
 		}
-	)
+
+		$("#menuWithArray").menu(
+			{
+				source: 	menuArray
+			,	mustache: 	"#menu_template"
+			,	dropdownFunction: dropdown
+			}
+		)
+
+		$("#menuWithFixtures").menu(
+			{
+				mustache: 	"#menu_template"
+			,	source:
+				{
+					url:	'/menus'
+				,	type:	'GET'
+				}
+			,	dropdownFunction: dropdown
+			}
+		)
+
+		$("#menuWithModel").menu(
+			{
+				mustache: 	"#menu_template"
+			,	source: 	Menu
+			,	dropdownFunction: dropdown
+			}
+		)
+	}
+)

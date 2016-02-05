@@ -23,83 +23,93 @@
 		<div id="demo">
 		</div>
 		<div id="content">
-			<div id="home">
+			<h3>Menu with Array options</h3>
+			<div id="menuWithArray">
 			</div>
-			<div id="">
+			<h3>Menu with can.fixture</h3>
+			<div id="menuWithFixtures">
 			</div>
-			<div id="">
+			<h3>Menu with can.Model</h3>
+			<div id="menuWithModel">
 			</div>
-			<div id="">
+			<h3>Menu with NodeJs</h3>
+			<div id="menuWithNode">
 			</div>
 		</div>
 	</body>
 
-	<script id="menu_template" type="text/mustache">
+	<script id="menu_template" type="text/stache">
 		<nav class="navbar navbar-default">
-				<div class="container-fluid">
-					{{items}}
-						{{#brand}}
-							<div class="navbar-header">
-									<a class="navbar-brand" href="#">{{}}</a>
-							</div>
-						{{/brand}}
-						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-							{{#left}}
-								<ul class="nav navbar-nav">
-									<li class="active">
-										<a href="#">Link <span class="sr-only">(current)</span></a>
-									</li>
-									<li>
-										<a href="#">Link</a>
-									</li
-								</ul>
-							{{/left}}
-							{{#right}}
-								<ul class="nav navbar-nav navbar-right">
-									<li>
-										<a href="#">Link</a>
-									</li>
+			<div class="container-fluid">
+				{{#brand}}
+					<div class="navbar-header">
+						<a class="navbar-brand" href="#">{{tag}}</a>
+					</div>
+				{{/brand}}
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+					{{#left}}
+						<li>
+							<a href="{{href}}{{^href}}#{{/href}}"
+								{{#if can.isArray(dropdown)}}
+									data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+								{{/dropdown}}
+								>
+								{{tag}} 
+								{{#if can.isArray(dropdown)}}
+									<span class="caret"></span>
+								{{/dropdown}}
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="dLabel">
+								{{#dropdown}}
 									<li class="dropdown">
-										<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-											Dropdown <span class="caret"></span>
-										</a>
+									 	{{tag}}
 									</li>
-								</ul>
-							{{/right}}
-						{{/items}}
-					</div><!-- /.navbar-collapse -->
-				</div>
-			</nav>
+								{{/dropdown}}
+							</ul>
+						</li>
+					{{/left}}
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+					{{#right}}
+						<li>
+							<a href="#">{{tag}}</a>
+						</li>
+					{{/right}}
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div>
+		</nav>
 	</script>
 
-	<script id="first_list" type="text/mustache">
+	<script id="first_list" type="text/stache">
 		<nav class="navbar navbar-default">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<a class="navbar-brand" href="#">Brand</a>
-					</div>
-					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul class="nav navbar-nav">
-							<li class="active">
-								<a href="#">Link <span class="sr-only">(current)</span></a>
-							</li>
-							<li>
-								<a href="#">Link</a>
-							</li
-						</ul>
-						<ul class="nav navbar-nav navbar-right">
-							<li>
-								<a href="#">Link</a>
-							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-									Dropdown <span class="caret"></span>
-								</a>
-							</li>
-						</ul>
-					</div><!-- /.navbar-collapse -->
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">Brand</a>
 				</div>
-			</nav>
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="active">
+							<a href="#">Link <span class="sr-only">(current)</span></a>
+						</li>
+						<li>
+							<a href="#">Link</a>
+						</li
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="#">Link</a>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								Dropdown <span class="caret"></span>
+							</a>
+						</li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div>
+		</nav>
 	</script>
 	<style>
 		/* bootstrapCustomView span color fix */
