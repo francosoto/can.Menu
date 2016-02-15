@@ -4,6 +4,7 @@ steal(
 ,	'can/control/plugin'
 ,	'can/observe'
 ,	'can/event'
+,	'can/view/stache'
 ,	'can/view'
 ,	function()
 	{
@@ -54,19 +55,23 @@ steal(
 
 					if(options.mustache)
 						this.template 
-						= 	can.mustache(can.$(options.mustache).html())
+						= 	can.stache(can.$(options.mustache).html())
 					else if(options.view)
 						can.append(
 							this.$menu
 						,	can.view(options.view)
 						)
+					else 
+						this._render_all()
 					
 					/* Create observables menu's options */
 					this._set_options_data()
+
+					this._apply_dropdown() 
 				}
 
 			,	_set_view: function() {
-					if(this.template)
+					if(this.template) 
 						can.append(
 							this.$menu
 						,	this.template(
@@ -75,7 +80,33 @@ steal(
 						)
 				}
 
-			,	_apply_dropdown: function($liElement,dropdown)
+				//TODO
+			,	_render_all: function() {
+
+				}
+
+			,	_apply_dropdown: function() {
+					this.element
+						.find('li')
+							.each(
+								function(index,item) {
+									console.log(index,item)
+								}
+							)
+					// this.element
+					// 	.find('li')
+					// 		.
+					// can.stache.registerHelper(
+					// 	'isArray'
+					// ,	function(dropdown, options)
+					// 	{
+					// 		return can.isArray(dropdown)
+					// 	}
+					// );
+					// this._apply_dropdown_li(this.element.find('li.dropdown'))
+				}
+
+			,	_apply_dropdown_li: function($liElement,dropdown)
 				{
 					$liElement
 						.addClass('dropdown')
@@ -143,11 +174,12 @@ steal(
 				 * 
 				 * @param {Function(query)} Function to be evaluated.
 				 */
+
 			,	model: function(Model)
 				{
-					Model(this.options.source?this.options.source.data:{})
+					Model()
 						.then(
-							can.proxy(this.render,this)	
+							can.proxy(this._set_options_array,this)	
 						)
 				}
 
@@ -157,7 +189,9 @@ steal(
 						.addClass('active')
 				}
 
-			,	'.dropdown-toggle click': function() {
+			,	'.dropdown-toggle click': function(ev) {
+					console.log(ev)
+
 					$liElement
 						.find('a')
 							.click(
@@ -169,97 +203,97 @@ steal(
 							)
 				}
 
-			,	'.menu > .navegable:not(".active") click': function(el,ev)
-				{
-					console.log(ev)
-					ev.preventDefault()
-					ev.stopPropagation()
+			// ,	'.menu > .navegable:not(".active") click': function(el,ev)
+			// 	{
+			// 		// console.log(ev)
+			// 		ev.preventDefault()
+			// 		ev.stopPropagation()
 
-					this.change_link(el,ev)
+			// 		this.change_link(el,ev)
 
-					/*this.newRoute(
-						can.$(el).attr('data-route')
-					)*/
-				}
+			// 		/*this.newRoute(
+			// 			can.$(el).attr('data-route')
+			// 		)*/
+			// 	}
 
-			,	'.menu > .navegable.active click': function(el,ev)
-				{
-					ev.preventDefault()
-					ev.stopPropagation()
+			// ,	'.menu > .navegable.active click': function(el,ev)
+			// 	{
+			// 		ev.preventDefault()
+			// 		ev.stopPropagation()
 
-					this.toggleSubmenu(can.$(el).attr('data-route'))
+			// 		this.toggleSubmenu(can.$(el).attr('data-route'))
 
-					this.newRoute(
-						can.$(el).attr('data-route')
-					)
-				}
+			// 		this.newRoute(
+			// 			can.$(el).attr('data-route')
+			// 		)
+			// 	}
 
-			,	change_link: function(el,ev)
-				{
-					this.newRoute(
-						can.$(el).attr('data-route')
-					)
-				}
+			// ,	change_link: function(el,ev)
+			// 	{
+			// 		this.newRoute(
+			// 			can.$(el).attr('data-route')
+			// 		)
+			// 	}
 
-			,	'enable_modal.sigma.menu': function(el,ev)
-				{
-					this.disable_modal
-					=	true
-				}
+			// ,	'enable_modal.sigma.menu': function(el,ev)
+			// 	{
+			// 		this.disable_modal
+			// 		=	true
+			// 	}
 
-			,	'disable_modal.sigma.menu': function(el,ev)
-				{
-					this.disable_modal
-					=	false
-				}
+			// ,	'disable_modal.sigma.menu': function(el,ev)
+			// 	{
+			// 		this.disable_modal
+			// 		=	false
+			// 	}
 
-			,	'.submenu > .navegable:not(".active") click': function(el,ev)
-				{
-					ev.preventDefault()
-					ev.stopPropagation()
+			// ,	'.submenu > .navegable:not(".active") click': function(el,ev)
+			// 	{
+			// 		ev.preventDefault()
+			// 		ev.stopPropagation()
 
-					this.newRoute(
-						can.$(el).attr('data-route')
-					)
-				}
+			// 		this.newRoute(
+			// 			can.$(el).attr('data-route')
+			// 		)
+			// 	}
 
-			,	toggleSubmenu: function(route)
-				{
-					this.element
-						.find('.submenu[data-parent="'+route+'"]')
-							.slideToggle('slow')
-							.find('.active')
-								.removeClass('active')
-				}
+			// ,	toggleSubmenu: function(route)
+			// 	{
+			// 		this.element
+			// 			.find('.submenu[data-parent="'+route+'"]')
+			// 				.slideToggle('slow')
+			// 				.find('.active')
+			// 					.removeClass('active')
+			// 	}
 
-			,	setActive: function(element_route)
-				{
-					var	$element
-					=	this.element
-							.find('.navegable[data-route="'+element_route+'"]')
+			// ,	setActive: function(element_route)
+			// 	{
+			// 		var	$element
+			// 		=	this.element
+			// 				.find('.navegable[data-route="'+element_route+'"]')
 
-					if	(!$element.hasClass('active'))
-					{
-						if	($element.parent().hasClass('menu'))	{
-							this.element
-									.find('.menu > .navegable.active')
-										.removeClass('active')
+			// 		if	(!$element.hasClass('active'))
+			// 		{
+			// 			if	($element.parent().hasClass('menu'))	{
+			// 				this.element
+			// 						.find('.menu > .navegable.active')
+			// 							.removeClass('active')
 
-							this.element
-								.find('.menu > .submenu')
-									.slideUp()
+			// 				this.element
+			// 					.find('.menu > .submenu')
+			// 						.slideUp()
 
-							this.toggleSubmenu(element_route)
-						}	else	{
-							this.element
-									.find('.submenu > .navegable.active')
-										.removeClass('active')
-						}
+			// 				this.toggleSubmenu(element_route)
+			// 			}	else	{
+			// 				this.element
+			// 						.find('.submenu > .navegable.active')
+			// 							.removeClass('active')
+			// 			}
 
-						$element
-							.addClass('active')
-					}
-				}
+			// 			$element
+			// 				.addClass('active')
+			// 		}
+			// 	}
 
 			}
 		)

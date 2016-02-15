@@ -1,0 +1,23 @@
+#menuWithoutBoot .navbar-without-boot {
+	width: 100%;
+	background-color: #e7e7e7;
+	height: 50px;
+}
+
+#menuWithoutBoot .navbar-without-boot .brand{
+	float: left;
+	height: 50px;
+	padding: 15px 15px;
+	font-size: 18px;
+	line-height: 20px;
+}
+
+#menuWithoutBoot .navbar-without-boot .left{
+	float:left;
+}
+
+#menuWithoutBoot .navbar-without-boot .right{
+	float:right;
+	width: auto;
+	height: 50px;
+}

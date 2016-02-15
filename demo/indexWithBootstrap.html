@@ -18,6 +18,7 @@
 
 		<!-- Bootstrap -->
 		<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="./stylesDemo.css" rel="stylesheet">
 	</head>
 	<body>
 		<div id="demo">
@@ -28,6 +29,21 @@
 			</div>
 			<h3>Menu with can.fixture</h3>
 			<div id="menuWithFixtures">
+			</div>
+			<h3>Menu with Array options without bootstrap</h3>
+			<div id="menuWithoutBoot">
+				<div class="navbar-without-boot">
+					<div class="brand">
+					</div>
+					<div class="left">
+						<ul>
+						</ul>
+					</div>
+					<div class="right">
+						<ul>
+						</ul>
+					</div>
+				</div>
 			</div>
 			<h3>Menu with can.Model</h3>
 			<div id="menuWithModel">
@@ -43,27 +59,29 @@
 			<div class="container-fluid">
 				{{#brand}}
 					<div class="navbar-header">
-						<a class="navbar-brand" href="#">{{tag}}</a>
+						<a class="navbar-brand" href="{{#href}}{{.}}{{/href}}{{^href}}#{{/href}}">
+							{{tag}}
+						</a>
 					</div>
 				{{/brand}}
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 					{{#left}}
-						<li>
-							<a href="{{href}}{{^href}}#{{/href}}"
-								{{#if can.isArray(dropdown)}}
+						<li {{data 'item'}}>
+							<a href="{{#href}}{{.}}{{/href}}{{^href}}#{{/href}}"
+								{{#dropdownLink dropdown}}
 									data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
 								{{/dropdown}}
 								>
 								{{tag}} 
-								{{#if can.isArray(dropdown)}}
+								{{#dropdownCaret dropdown}}
 									<span class="caret"></span>
 								{{/dropdown}}
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="dLabel">
-								{{#dropdown}}
+								{{#each dropdown}}
 									<li class="dropdown">
-									 	{{tag}}
+									 	<a>{{tag}}</a>
 									</li>
 								{{/dropdown}}
 							</ul>
@@ -72,7 +90,7 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 					{{#right}}
-						<li>
+						<li {{data 'item'}}>
 							<a href="#">{{tag}}</a>
 						</li>
 					{{/right}}

@@ -5,36 +5,7 @@ steal(
 ,	'menu.js'
 ,	function()
 	{
-		var	menuArray =	{
-				brand: [
-					{
-						tag: 		'Home'
-					,	actived: 	true
-					,	href: 		'#'
-					}
-				]
-			,	left: [
-					{
-						tag: 		'Second Option'
-					,	href: 		'#/second_option'
-					}
-				,	{
-						tag: 		'Countries'
-					,	dropdown: 	dropdown1
-					}
-				]
-			,	right: [
-					{
-						tag: 		'Fourth Option'
-					,	href: 		'#/other_option'
-					}
-				,	{
-						tag: 		'User X'
-					,	dropdown: 	dropdown2
-					}
-				]
-			}
-		, 	dropdown1 =	[
+		var	dropdown1 =	[
 				{
 					tag: 	'Argentina'
 				,	href: 	'#/argentina'
@@ -86,6 +57,35 @@ steal(
 				,	icon: 	''
 				}
 			]
+		,	menuArray =	{
+				brand: [
+					{
+						tag: 		'Home'
+					,	actived: 	true
+					,	href: 		'#'
+					}
+				]
+			,	left: [
+					{
+						tag: 		'Second Option'
+					,	href: 		'#/second_option'
+					}
+				,	{
+						tag: 		'Countries'
+					,	dropdown: 	dropdown1
+					}
+				]
+			,	right: [
+					{
+						tag: 		'Fourth Option'
+					,	href: 		'#/other_option'
+					}
+				,	{
+						tag: 		'User X'
+					,	dropdown: 	dropdown2
+					}
+				]
+			}
 
 		can.fixture(
 			'GET /menus'
@@ -103,6 +103,7 @@ steal(
 			{
 				get: function(query)
 				{
+					console.log(query)
 					return	can.ajax(
 								{
 									url: '/menus'
@@ -119,6 +120,24 @@ steal(
 			$element.find('.dropdown-toggle')
 				.dropdown()
 		}
+
+		can.stache.registerHelper(
+			'dropdownLink'
+		,	function(dropdown, options) {
+				return 	can.isArray(dropdown)
+						?	'data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'
+						: 	''
+			}
+		);
+
+		can.stache.registerHelper(
+			'dropdownCaret'
+		,	function(dropdown, options) {
+				return 	can.isArray(dropdown)
+						?	'<span class="caret"></span>'
+						: 	''
+			}
+		);
 
 		$("#menuWithArray").menu(
 			{
@@ -143,7 +162,7 @@ steal(
 		$("#menuWithModel").menu(
 			{
 				mustache: 	"#menu_template"
-			,	source: 	Menu
+			,	source: 	Menu.get
 			,	dropdownFunction: dropdown
 			}
 		)
