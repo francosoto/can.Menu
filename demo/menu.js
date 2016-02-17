@@ -86,34 +86,26 @@ steal(
 				}
 
 			,	_apply_dropdown: function() {
+					var self
+					=	this 
+
 					this.element
 						.find('li')
 							.each(
 								function(index,item) {
-									console.log(index,item)
+									if(	$(item).data('item') 
+										&&	$(item).data('item').attr('dropdown')
+										&&	$(item).data('item').dropdown.length > 0
+									)
+										self._apply_dropdown_li($(item),$(item).data('item.dropdown'))
 								}
 							)
-					// this.element
-					// 	.find('li')
-					// 		.
-					// can.stache.registerHelper(
-					// 	'isArray'
-					// ,	function(dropdown, options)
-					// 	{
-					// 		return can.isArray(dropdown)
-					// 	}
-					// );
-					// this._apply_dropdown_li(this.element.find('li.dropdown'))
 				}
 
 			,	_apply_dropdown_li: function($liElement,dropdown)
 				{
 					$liElement
 						.addClass('dropdown')
-
-					$liElement
-						.find('a')
-							.addClass('dropdown-toggle')
 
 					if(this.options.dropdownFunction)
 						this.options.dropdownFunction($liElement)
@@ -129,7 +121,6 @@ steal(
 									+ '{{/dropdown}}</ul>'
 								)(dropdown)
 							)
-						
 					}
 				}
 
@@ -189,18 +180,15 @@ steal(
 						.addClass('active')
 				}
 
-			,	'.dropdown-toggle click': function(ev) {
-					console.log(ev)
+			,	'.dropdown-toggle click': function(el,ev) {
 
-					$liElement
-						.find('a')
-							.click(
-								function()
-								{
-									can.$("ul.dropdown-menu")
-										.toggle()
-								}
-							)
+					if(!this.options.dropdownFunction)
+						can.$("ul.dropdown-menu")
+							.toggle()
+
+					// this.newRoute(
+					// 	can.$(el).attr('data-route')
+					// )
 				}
 
 			// ,	'.menu > .navegable:not(".active") click': function(el,ev)

@@ -68,20 +68,20 @@
 					<ul class="nav navbar-nav">
 					{{#left}}
 						<li {{data 'item'}}>
-							<a href="{{#href}}{{.}}{{/href}}{{^href}}#{{/href}}"
-								{{#dropdownLink dropdown}}
-									data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
-								{{/dropdown}}
+							<a {{#href}}href="{{.}}"{{/href}}
+								{{#dropdownTrue dropdown}}
+									data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"
+								{{/dropdownTrue}}
 								>
 								{{tag}} 
-								{{#dropdownCaret dropdown}}
+								{{#dropdownTrue dropdown}}
 									<span class="caret"></span>
-								{{/dropdown}}
+								{{/dropdownTrue}}
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="dLabel">
 								{{#each dropdown}}
 									<li class="dropdown">
-									 	<a>{{tag}}</a>
+									 	<a {{#href}}href="{{.}}"{{/href}}>{{tag}}</a>
 									</li>
 								{{/dropdown}}
 							</ul>
@@ -91,7 +91,23 @@
 					<ul class="nav navbar-nav navbar-right">
 					{{#right}}
 						<li {{data 'item'}}>
-							<a href="#">{{tag}}</a>
+							<a {{#href}}href="{{.}}"{{/href}}
+								{{#dropdownTrue dropdown}}
+									data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"
+								{{/dropdownTrue}}
+								>
+								{{tag}}
+								{{#dropdownTrue dropdown}}
+									<span class="caret"></span>
+								{{/dropdownTrue}}
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="dLabel">
+								{{#each dropdown}}
+									<li>
+									 	<a {{#href}}href="{{.}}"{{/href}}>{{tag}}</a>
+									</li>
+								{{/dropdown}}
+							</ul>
 						</li>
 					{{/right}}
 					</ul>

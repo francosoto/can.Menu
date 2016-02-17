@@ -2,6 +2,7 @@ steal(
 	'can/model'
 ,	'can/util/fixture'
 ,	'can/view/mustache'
+,	'bower_components/bootstrap/js/dropdown.js'
 ,	'menu.js'
 ,	function()
 	{
@@ -103,7 +104,6 @@ steal(
 			{
 				get: function(query)
 				{
-					console.log(query)
 					return	can.ajax(
 								{
 									url: '/menus'
@@ -116,26 +116,19 @@ steal(
 		,	{	}
 		)
 
-		function dropdown($element) {
-			$element.find('.dropdown-toggle')
-				.dropdown()
+		function dropdownFunc($element) {
+			// console.log($element,$element.find('.dropdown-toggle'))
+			if($element.find('a.dropdown-toggle'))
+				$element.find('a.dropdown-toggle')
+					.dropdown()
 		}
 
 		can.stache.registerHelper(
-			'dropdownLink'
+			'dropdownTrue'
 		,	function(dropdown, options) {
-				return 	can.isArray(dropdown)
-						?	'data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'
-						: 	''
-			}
-		);
-
-		can.stache.registerHelper(
-			'dropdownCaret'
-		,	function(dropdown, options) {
-				return 	can.isArray(dropdown)
-						?	'<span class="caret"></span>'
-						: 	''
+				if(dropdown() instanceof can.Map)
+					return options.fn(this) 	
+						
 			}
 		);
 
@@ -143,7 +136,7 @@ steal(
 			{
 				source: 	menuArray
 			,	mustache: 	"#menu_template"
-			,	dropdownFunction: dropdown
+			,	dropdownFunction: dropdownFunc
 			}
 		)
 
@@ -155,7 +148,18 @@ steal(
 					url:	'/menus'
 				,	type:	'GET'
 				}
-			,	dropdownFunction: dropdown
+			,	dropdownFunction: dropdownFunc
+			}
+		)
+
+		$("#menuWithoutBoot").menu(
+			{
+				mustache: 	"#menu_template"
+			,	source:
+				{
+					url:	'/menus'
+				,	type:	'GET'
+				}
 			}
 		)
 
@@ -163,7 +167,7 @@ steal(
 			{
 				mustache: 	"#menu_template"
 			,	source: 	Menu.get
-			,	dropdownFunction: dropdown
+			,	dropdownFunction: dropdownFunc
 			}
 		)
 	}

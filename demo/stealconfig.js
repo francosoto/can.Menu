@@ -20,36 +20,38 @@
 			supportsUnknownElements = true;
 		}
 	}());
-
-	System
-		.config(
-			{
-				map:
-				{
-					'jquery/jquery':'jquery'
-				,	'can':'bower_components/canjs'
-				}
-			,	paths:
-				{
-					'jquery':'bower_components/jquery/dist/jquery.js'
-				,	'menu':'../menu.js'
-				}
-			,	meta:
-				{
-					'jquery':
-					{
-						'exports':	'jQuery'
-					,	'deps':		supportsUnknownElements ? undefined : ['can/lib/html5shiv.js']
-					}
-				}
-			,	ext:
-				{
-					'ejs': 'can/view/ejs/system'
-				,	'mustache':	'can/view/mustache/system'
-				,	'stache':	'can/view/stache/system'
-				}
-			}
-		);
+	// console.log('pelotudo')
+	// System
+	// 	.config(
+	// 		{
+	// 			map:
+	// 			{
+	// 				'jquery/jquery':'jquery'
+	// 			,	'can':'bower_components/canjs'
+	// 			,	'bootstrap':'bower_components/bootstrap'
+	// 			}
+	// 		,	paths:
+	// 			{
+	// 				'jquery':'bower_components/jquery/dist/jquery.js'
+	// 			,	'menu':'../menu.js'
+	// 			,	'dropdown' : 'bower_components/bootstrap/js/dropdown.js'
+	// 			}
+	// 		,	meta:
+	// 			{
+	// 				'jquery':
+	// 				{
+	// 					'exports':	'jQuery'
+	// 				,	'deps':		supportsUnknownElements ? undefined : ['can/lib/html5shiv.js']
+	// 				}
+	// 			}
+	// 		,	ext:
+	// 			{
+	// 				'ejs': 'can/view/ejs/system'
+	// 			,	'mustache':	'can/view/mustache/system'
+	// 			,	'stache':	'can/view/stache/system'
+	// 			}
+	// 		}
+	// 	);
 	}
 )();
 
