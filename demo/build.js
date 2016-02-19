@@ -1,6 +1,6 @@
 var	stealTools
 =	require('steal-tools')
-
+console.log(__dirname)
 stealTools
 	.build(
 		{

@@ -54,24 +54,24 @@ steal(
 							)
 
 					if(options.mustache)
-						this.template 
+						this.template
 						= 	can.stache(can.$(options.mustache).html())
 					else if(options.view)
 						can.append(
 							this.$menu
 						,	can.view(options.view)
 						)
-					else 
+					else
 						this._render_all()
-					
+
 					/* Create observables menu's options */
 					this._set_options_data()
 
-					this._apply_dropdown() 
+					this._apply_dropdown()
 				}
 
 			,	_set_view: function() {
-					if(this.template) 
+					if(this.template)
 						can.append(
 							this.$menu
 						,	this.template(
@@ -87,17 +87,17 @@ steal(
 
 			,	_apply_dropdown: function() {
 					var self
-					=	this 
+					=	this
 
 					this.element
 						.find('li')
 							.each(
 								function(index,item) {
-									if(	$(item).data('item') 
+									if(	$(item).data('item')
 										&&	$(item).data('item').attr('dropdown')
 										&&	$(item).data('item').dropdown.length > 0
 									)
-										self._apply_dropdown_li($(item),$(item).data('item.dropdown'))
+										self._apply_dropdown_li($(item),$(item).data('item').attr('dropdown'))
 								}
 							)
 				}
@@ -110,7 +110,6 @@ steal(
 					if(this.options.dropdownFunction)
 						this.options.dropdownFunction($liElement)
 					else
-					{
 						$liElement
 							.append(
 								can.stache(
@@ -121,13 +120,12 @@ steal(
 									+ '{{/dropdown}}</ul>'
 								)(dropdown)
 							)
-					}
 				}
 
-			, 	_set_options_data: function() 
+			, 	_set_options_data: function()
 				{
 					if	(
-						can.isPlainObject(this.options.source) 
+						can.isPlainObject(this.options.source)
 						&& 	this.options.source.url
 						&&	this.options.source.type
 					)
@@ -138,7 +136,7 @@ steal(
 						this.model(this.options.source)
 				}
 
-			,	_set_options_ajax: function(ajaxObject) 
+			,	_set_options_ajax: function(ajaxObject)
 				{
 					can.ajax(
 						ajaxObject
@@ -147,22 +145,20 @@ steal(
 					)
 				}
 
-			,	_set_options_array: function(options_menu) 
+			,	_set_options_array: function(options_menu)
 				{
 					this.options_menu
 					=	new can.Map(
 							options_menu
 							?	options_menu
-							: 	{
-									items:[]
-								}
+							: 	{}
 						)
 
 					this._set_view()
 				}
 
 				/**
-				 * 
+				 *
 				 * @param {Function(query)} Function to be evaluated.
 				 */
 
@@ -170,7 +166,7 @@ steal(
 				{
 					Model()
 						.then(
-							can.proxy(this._set_options_array,this)	
+							can.proxy(this._set_options_array,this)
 						)
 				}
 
@@ -185,43 +181,37 @@ steal(
 					if(!this.options.dropdownFunction)
 						can.$("ul.dropdown-menu")
 							.toggle()
-
-					// this.newRoute(
-					// 	can.$(el).attr('data-route')
-					// )
 				}
 
-			// ,	'.menu > .navegable:not(".active") click': function(el,ev)
-			// 	{
-			// 		// console.log(ev)
-			// 		ev.preventDefault()
-			// 		ev.stopPropagation()
+			,	'{this.element} > .navegable:not(".active") click': function(el,ev)
+				{
+			 		console.log(evv,el)
+			 		ev.preventDefault()
+			 		ev.stopPropagation()
 
-			// 		this.change_link(el,ev)
+			 		this.change_link(el)
+					this._set_actived(el)
+				}
 
-			// 		/*this.newRoute(
-			// 			can.$(el).attr('data-route')
-			// 		)*/
-			// 	}
+			 ,	'{this.element} > .navegable.active click': function(el,ev)
+			 	{
+			 		ev.preventDefault()
+					ev.stopPropagation()
 
-			// ,	'.menu > .navegable.active click': function(el,ev)
-			// 	{
-			// 		ev.preventDefault()
-			// 		ev.stopPropagation()
+			 		//this.toggleSubmenu(can.$(el).attr('data-route'))
 
-			// 		this.toggleSubmenu(can.$(el).attr('data-route'))
+			 		//this.newRoute(
+			 			//can.$(el).attr('data-route')
+			 		//)
+			 	}
 
-			// 		this.newRoute(
-			// 			can.$(el).attr('data-route')
-			// 		)
-			// 	}
-
-			// ,	change_link: function(el,ev)
-			// 	{
-			// 		this.newRoute(
-			// 			can.$(el).attr('data-route')
-			// 		)
-			// 	}
+			 ,	change_link: function(el)
+			 	{
+					if(this.options.routes)
+				 		this.newRoute(
+				 			can.$(el).attr('data-route')
+				 		)
+			 	}
 
 			// ,	'enable_modal.sigma.menu': function(el,ev)
 			// 	{

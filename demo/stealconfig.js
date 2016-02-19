@@ -20,7 +20,7 @@
 			supportsUnknownElements = true;
 		}
 	}());
-	// console.log('pelotudo')
+	console.log('pelotudo')
 	// System
 	// 	.config(
 	// 		{

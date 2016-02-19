@@ -68,12 +68,12 @@
 					<ul class="nav navbar-nav">
 					{{#left}}
 						<li {{data 'item'}}>
-							<a {{#href}}href="{{.}}"{{/href}}
+							<a {{#href}}href="#/{{.}}" class="navegable"{{/href}}
 								{{#dropdownTrue dropdown}}
 									data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"
 								{{/dropdownTrue}}
 								>
-								{{tag}} 
+								{{tag}}
 								{{#dropdownTrue dropdown}}
 									<span class="caret"></span>
 								{{/dropdownTrue}}
@@ -81,7 +81,7 @@
 							<ul class="dropdown-menu" aria-labelledby="dLabel">
 								{{#each dropdown}}
 									<li class="dropdown">
-									 	<a {{#href}}href="{{.}}"{{/href}}>{{tag}}</a>
+									 	<a {{#href}}href="#/{{.}}" class="navegable"{{/href}}>{{tag}}</a>
 									</li>
 								{{/dropdown}}
 							</ul>
@@ -91,7 +91,7 @@
 					<ul class="nav navbar-nav navbar-right">
 					{{#right}}
 						<li {{data 'item'}}>
-							<a {{#href}}href="{{.}}"{{/href}}
+							<a {{#href}}href="/#/{{.}}"{{/href}}
 								{{#dropdownTrue dropdown}}
 									data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"
 								{{/dropdownTrue}}
@@ -125,10 +125,10 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li class="active">
-							<a href="#">Link <span class="sr-only">(current)</span></a>
+							<a data-routing="">Link <span class="sr-only">(current)</span></a>
 						</li>
 						<li>
-							<a href="#">Link</a>
+							<a data-routing="">Link</a>
 						</li
 					</ul>
 					<ul class="nav navbar-nav navbar-right">

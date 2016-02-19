@@ -9,34 +9,34 @@ steal(
 		var	dropdown1 =	[
 				{
 					tag: 	'Argentina'
-				,	href: 	'#/argentina'
+				,	href: 	'argentina'
 				,	icon: 	''
 				}
 			, 	{
 					tag: 	'Uruguay'
-				,	href: 	'#/uruguay'
+				,	href: 	'uruguay'
 				,	icon: 	''
 				}
 			, 	{
 					tag: 	'Colombia'
-				,	href: 	'#/colombia'
+				,	href: 	'colombia'
 				,	icon: 	''
 				}
 			, 	{
 					tag: 	'Brasil'
-				,	href: 	'#/brasil'
+				,	href: 	'brasil'
 				,	icon: 	''
 				}
 			]
 		, 	dropdown2 =	[
 				{
 					tag: 	'Config'
-				,	href: 	'#'
+				,	href: 	'config'
 				,	icon: 	''
 				}
 			, 	{
-					tag: 	'Config'
-				,	href: 	'#'
+					tag: 	'Config2'
+				,	href: 	'config2'
 				,	icon: 	''
 				}
 			, 	{
@@ -44,8 +44,8 @@ steal(
 				, 	'class':'divider'
 				}
 			, 	{
-					tag: 	'Config'
-				,	href: 	'#'
+					tag: 	'Config3'
+				,	href: 	'config3'
 				,	icon: 	''
 				}
 			,	{
@@ -53,8 +53,8 @@ steal(
 				, 	'class':'divider'
 				}
 			, 	{
-					tag: 	'Config'
-				,	href: 	'#'
+					tag: 	'Logout'
+				,	href: 	'logout'
 				,	icon: 	''
 				}
 			]
@@ -69,7 +69,7 @@ steal(
 			,	left: [
 					{
 						tag: 		'Second Option'
-					,	href: 		'#/second_option'
+					,	href: 		'second_option'
 					}
 				,	{
 						tag: 		'Countries'
@@ -79,7 +79,7 @@ steal(
 			,	right: [
 					{
 						tag: 		'Fourth Option'
-					,	href: 		'#/other_option'
+					,	href: 		'other_option'
 					}
 				,	{
 						tag: 		'User X'
@@ -117,8 +117,7 @@ steal(
 		)
 
 		function dropdownFunc($element) {
-			// console.log($element,$element.find('.dropdown-toggle'))
-			if($element.find('a.dropdown-toggle'))
+			//if($element.find('a.dropdown-toggle'))
 				$element.find('a.dropdown-toggle')
 					.dropdown()
 		}
@@ -127,8 +126,8 @@ steal(
 			'dropdownTrue'
 		,	function(dropdown, options) {
 				if(dropdown() instanceof can.Map)
-					return options.fn(this) 	
-						
+					return options.fn(this)
+
 			}
 		);
 
