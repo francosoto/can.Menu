@@ -4,6 +4,7 @@ steal(
 ,	'can/control/plugin'
 ,	'can/observe'
 ,	'can/event'
+,	'can/view/stache'
 ,	'can/view'
 ,	function()
 	{
@@ -30,16 +31,11 @@ steal(
 				 * @option {Array|Object|function(query)} [source] Source data. Array of Objects, Array of Strings. Ajax Object or a function that shoudld return a deferred.
 				 * @option {Object} [query] Extra query to perfom on the request of suggestions.
 				*/
-				// 	minLength:	3
-				// ,	displayKey:	'name'
-				// ,	timeout:	400
-					view:			undefined
-				,	mustache: 		undefined
-				,	content: 		undefined
-				,	routes: 		undefined
-				,	options_menu:	undefined
-				// ,	source:		undefined
-				// ,	query:		{}
+					view:				undefined
+				,	mustache: 			undefined
+				,	routes: 			undefined
+				,	source:				undefined
+				,	dropdownFunction: 	undefined
 				}
 			}
 		,	{
@@ -50,139 +46,231 @@ steal(
 				 */
 				init: function(element, options)
 				{
-					// this.options_menu
-					// =	new can.Map({items: []})
+					this.$menu
+					=	can.$('<div>')
+							.appendTo(
+								this.element
+							)
+
+					if(options.mustache)
+						this.template
+						= 	can.stache(can.$(options.mustache).html())
+					else if(options.view)
+						can.append(
+							this.$menu
+						,	can.view(options.view)
+						)
+					else
+						this._render_all()
 
 					/* Create observables menu's options */
+					this._set_options_data()
+
+					this._apply_dropdown()
+				}
+
+			,	_set_view: function() {
+					if(this.template)
+						can.append(
+							this.$menu
+						,	this.template(
+								this.options_menu
+							)
+						)
+				}
+
+				//TODO
+			,	_render_all: function() {
+
+				}
+
+			,	_apply_dropdown: function() {
+					var self
+					=	this
+
+					this.element
+						.find('li')
+							.each(
+								function(index,item) {
+									if(	$(item).data('item')
+										&&	$(item).data('item').attr('dropdown')
+										&&	$(item).data('item').dropdown.length > 0
+									)
+										self._apply_dropdown_li($(item),$(item).data('item').attr('dropdown'))
+								}
+							)
+				}
+
+			,	_apply_dropdown_li: function($liElement,dropdown)
+				{
+					$liElement
+						.addClass('dropdown')
+
+					if(this.options.dropdownFunction)
+						this.options.dropdownFunction($liElement)
+					else
+						$liElement
+							.append(
+								can.stache(
+									'<ul class="dropdown-menu">{{#dropdown}}'
+									+	'<li>'
+									+		'<a href="{{href}}">{{tag}}</a>'
+									+	'</li>'
+									+ '{{/dropdown}}</ul>'
+								)(dropdown)
+							)
+				}
+
+			, 	_set_options_data: function()
+				{
+					if	(
+						can.isPlainObject(this.options.source)
+						&& 	this.options.source.url
+						&&	this.options.source.type
+					)
+						this._set_options_ajax(this.options.source)
+					else if	(can.isPlainObject(this.options.source))
+						this._set_options_array(this.options.source)
+					else
+						this.model(this.options.source)
+				}
+
+			,	_set_options_ajax: function(ajaxObject)
+				{
+					can.ajax(
+						ajaxObject
+					).then(
+						can.proxy(this._set_options_array,this)
+					)
+				}
+
+			,	_set_options_array: function(options_menu)
+				{
 					this.options_menu
 					=	new can.Map(
-							options.options_menu
-							?	options.options_menu
-							: 	{
-									items:[]
-								}
+							options_menu
+							?	options_menu
+							: 	{}
 						)
 
-					if(options.view && options.mustache)
-						this._apply_template()
-
-					this.$menu.find('.submenu').hide()
-
-					console.log(this.$menu)
+					this._set_view()
 				}
-			,	_apply_template: function()
-				{
-					/* View the template / mustache */
 
-					can.append(
-						this.$menu
-						=	can.$('<div>')
-								.appendTo(
-									this.element.parent()
-								)
-					,	can.view(
-							options.view
-						,	options.options_menu
+				/**
+				 *
+				 * @param {Function(query)} Function to be evaluated.
+				 */
+
+			,	model: function(Model)
+				{
+					Model()
+						.then(
+							can.proxy(this._set_options_array,this)
 						)
-					)
 				}
 
-			,	_apply_dropdown: function()
-				{
-
+			,	_set_actived: function($liActived) {
+					// active
+					$liActived
+						.addClass('active')
 				}
 
-			,	'.menu > .navegable:not(".active") click': function(el,ev)
+			,	'.dropdown-toggle click': function(el,ev) {
+
+					if(!this.options.dropdownFunction)
+						can.$("ul.dropdown-menu")
+							.toggle()
+				}
+
+			,	'{this.element} > .navegable:not(".active") click': function(el,ev)
 				{
-					console.log(ev)
-					ev.preventDefault()
+			 		console.log(evv,el)
+			 		ev.preventDefault()
+			 		ev.stopPropagation()
+
+			 		this.change_link(el)
+					this._set_actived(el)
+				}
+
+			 ,	'{this.element} > .navegable.active click': function(el,ev)
+			 	{
+			 		ev.preventDefault()
 					ev.stopPropagation()
 
-					this.change_link(el,ev)
+			 		//this.toggleSubmenu(can.$(el).attr('data-route'))
 
-					/*this.newRoute(
-						can.$(el).attr('data-route')
-					)*/
-				}
+			 		//this.newRoute(
+			 			//can.$(el).attr('data-route')
+			 		//)
+			 	}
 
-			,	'.menu > .navegable.active click': function(el,ev)
-				{
-					ev.preventDefault()
-					ev.stopPropagation()
+			 ,	change_link: function(el)
+			 	{
+					if(this.options.routes)
+				 		this.newRoute(
+				 			can.$(el).attr('data-route')
+				 		)
+			 	}
 
-					this.toggleSubmenu(can.$(el).attr('data-route'))
+			// ,	'enable_modal.sigma.menu': function(el,ev)
+			// 	{
+			// 		this.disable_modal
+			// 		=	true
+			// 	}
 
-					this.newRoute(
-						can.$(el).attr('data-route')
-					)
-				}
+			// ,	'disable_modal.sigma.menu': function(el,ev)
+			// 	{
+			// 		this.disable_modal
+			// 		=	false
+			// 	}
 
-			,	change_link: function(el,ev)
-				{
-					this.newRoute(
-						can.$(el).attr('data-route')
-					)
-				}
+			// ,	'.submenu > .navegable:not(".active") click': function(el,ev)
+			// 	{
+			// 		ev.preventDefault()
+			// 		ev.stopPropagation()
 
-			,	'enable_modal.sigma.menu': function(el,ev)
-				{
-					this.disable_modal
-					=	true
-				}
+			// 		this.newRoute(
+			// 			can.$(el).attr('data-route')
+			// 		)
+			// 	}
 
-			,	'disable_modal.sigma.menu': function(el,ev)
-				{
-					this.disable_modal
-					=	false
-				}
+			// ,	toggleSubmenu: function(route)
+			// 	{
+			// 		this.element
+			// 			.find('.submenu[data-parent="'+route+'"]')
+			// 				.slideToggle('slow')
+			// 				.find('.active')
+			// 					.removeClass('active')
+			// 	}
 
-			,	'.submenu > .navegable:not(".active") click': function(el,ev)
-				{
-					ev.preventDefault()
-					ev.stopPropagation()
+			// ,	setActive: function(element_route)
+			// 	{
+			// 		var	$element
+			// 		=	this.element
+			// 				.find('.navegable[data-route="'+element_route+'"]')
 
-					this.newRoute(
-						can.$(el).attr('data-route')
-					)
-				}
+			// 		if	(!$element.hasClass('active'))
+			// 		{
+			// 			if	($element.parent().hasClass('menu'))	{
+			// 				this.element
+			// 						.find('.menu > .navegable.active')
+			// 							.removeClass('active')
 
-			,	toggleSubmenu: function(route)
-				{
-					this.element
-						.find('.submenu[data-parent="'+route+'"]')
-							.slideToggle('slow')
-							.find('.active')
-								.removeClass('active')
-				}
+			// 				this.element
+			// 					.find('.menu > .submenu')
+			// 						.slideUp()
 
-			,	setActive: function(element_route)
-				{
-					var	$element
-					=	this.element
-							.find('.navegable[data-route="'+element_route+'"]')
+			// 				this.toggleSubmenu(element_route)
+			// 			}	else	{
+			// 				this.element
+			// 						.find('.submenu > .navegable.active')
+			// 							.removeClass('active')
+			// 			}
 
-					if	(!$element.hasClass('active'))
-					{
-						if	($element.parent().hasClass('menu'))	{
-							this.element
-									.find('.menu > .navegable.active')
-										.removeClass('active')
-
-							this.element
-									.find('.menu > .submenu')
-										.slideUp()
-
-							this.toggleSubmenu(element_route)
-						}	else	{
-							this.element
-									.find('.submenu > .navegable.active')
-										.removeClass('active')
-						}
-
-						$element
-							.addClass('active')
-					}
-				}
+			// 			$element
+			// 				.addClass('active')
+			// 		}
+			// 	}
 
 			}
 		)
