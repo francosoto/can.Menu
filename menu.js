@@ -4,6 +4,7 @@ steal(
 ,	'can/control/plugin'
 ,	'can/observe'
 ,	'can/event'
+,	'can/route'
 ,	'can/view/stache'
 ,	'can/view'
 ,	function()
@@ -63,10 +64,19 @@ steal(
 					else
 						this._render_all()
 
+					this._initialize_routes()
+
 					/* Create observables menu's options */
 					this._set_options_data()
 
 					this._apply_dropdown()
+				}
+
+				// Ver si es necesario...
+			,	_initialize_routes: function() {
+					can.route(":menu")
+					can.route(":menu:sections")	
+					can.route.ready()
 				}
 
 			,	_set_view: function() {
@@ -80,9 +90,9 @@ steal(
 				}
 
 				//TODO - render all basic menu
-			,	_render_all: function() {
+			// ,	_render_all: function() {
 					
-				}
+			// 	}
 
 			,	_apply_dropdown: function() {
 					var self
@@ -96,7 +106,10 @@ steal(
 										&&	$(item).data('item').attr('dropdown')
 										&&	$(item).data('item').dropdown.length > 0
 									)
-										self._apply_dropdown_li($(item),$(item).data('item').attr('dropdown'))
+										self._apply_dropdown_li(
+											$(item)
+										,	$(item).data('item').attr('dropdown')
+										);
 								}
 							)
 				}
@@ -108,7 +121,7 @@ steal(
 
 					if(this.options.dropdownFunction)
 						this.options.dropdownFunction($liElement)
-					else
+					else //Basic dropdown menu
 						$liElement
 							.append(
 								can.stache(
@@ -170,46 +183,49 @@ steal(
 				}
 
 			,	_set_actived: function($liActived) {
-					// active
-					$liActived
-						.addClass('active')
+					var	$element
+					=	this.element
+							.find('.navegable.active')
+
+					if($element.data('route') != $liActived.data('route')) {
+						$element
+							.removeClass('active')
+
+						$liActived
+							.addClass('active') 
+					}
 				}
 
 			,	'.dropdown-toggle click': function(el,ev) {
-
 					if(!this.options.dropdownFunction)
-						can.$("ul.dropdown-menu")
+						this.element.find("ul.dropdown-menu")
 							.toggle()
 				}
 
-			,	'{this.element} > .navegable:not(".active") click': function(el,ev)
+			,	'.navegable:not(.active) click': function(el,ev)
 				{
-			 		console.log(evv,el)
 			 		ev.preventDefault()
 			 		ev.stopPropagation()
 
 			 		this.change_link(el)
 					this._set_actived(el)
+
+					// can.$('.dropdown-toggle')
+
 				}
-
-			 ,	'{this.element} > .navegable.active click': function(el,ev)
-			 	{
-			 		ev.preventDefault()
-					ev.stopPropagation()
-
-			 		//this.toggleSubmenu(can.$(el).attr('data-route'))
-
-			 		//this.newRoute(
-			 			//can.$(el).attr('data-route')
-			 		//)
-			 	}
 
 			 ,	change_link: function(el)
 			 	{
+			 		console.log(el,can.$(el).attr('data-route'))
 					if(this.options.routes)
-				 		this.newRoute(
+				 		can.route(
 				 			can.$(el).attr('data-route')
 				 		)
+			 	}
+
+			 ,	'{can.route} change': function(el,attr)
+			 	{
+			 		console.log(el,attr)
 			 	}
 
 			// ,	'enable_modal.sigma.menu': function(el,ev)

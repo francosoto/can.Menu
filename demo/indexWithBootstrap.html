@@ -68,7 +68,7 @@
 					<ul class="nav navbar-nav">
 					{{#left}}
 						<li {{data 'item'}}>
-							<a {{#href}}href="#/{{.}}" class="navegable"{{/href}}
+							<a {{#href}} href="#{{.}}" data-route="{{.}}" class="navegable"{{/href}}
 								{{#dropdownTrue dropdown}}
 									data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"
 								{{/dropdownTrue}}
@@ -78,20 +78,24 @@
 									<span class="caret"></span>
 								{{/dropdownTrue}}
 							</a>
+							{{#if dropdown}}
 							<ul class="dropdown-menu" aria-labelledby="dLabel">
 								{{#each dropdown}}
 									<li class="dropdown">
-									 	<a {{#href}}href="#/{{.}}" class="navegable"{{/href}}>{{tag}}</a>
+									 	<a {{#href}} href="#{{.}}" data-route="{{.}}" class="navegable"{{/href}}>
+									 		{{tag}}
+									 	</a>
 									</li>
 								{{/dropdown}}
 							</ul>
+							{{/if}}
 						</li>
 					{{/left}}
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 					{{#right}}
 						<li {{data 'item'}}>
-							<a {{#href}}href="/#/{{.}}"{{/href}}
+							<a {{#href}} href="#{{.}}" data-route="{{.}}" class="navegable"{{/href}}
 								{{#dropdownTrue dropdown}}
 									data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"
 								{{/dropdownTrue}}
@@ -104,7 +108,7 @@
 							<ul class="dropdown-menu" aria-labelledby="dLabel">
 								{{#each dropdown}}
 									<li>
-									 	<a {{#href}}href="{{.}}"{{/href}}>{{tag}}</a>
+									 	<a {{#href}}href="{{.}}" class="navegable"{{/href}}>{{tag}}</a>
 									</li>
 								{{/dropdown}}
 							</ul>

@@ -1,5 +1,5 @@
 {
-  "name": "can.Menu",
+  "name": "can.menu",
   "version": "0.0.1",
   "repository": {
     "type": "git",
@@ -20,5 +20,16 @@
   "devDependencies": {
     "bootstrap": "~3.3.6",
     "funcunit": "~2.0.4"
-  }
+  },
+  "homepage": "https://github.com/francosoto/can.Menu",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
