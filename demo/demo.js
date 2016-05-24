@@ -118,8 +118,8 @@ steal(
 
 		function dropdownFunc($element) {
 			//if($element.find('a.dropdown-toggle'))
-				$element.find('a.dropdown-toggle')
-					.dropdown()
+			$element.find('a.dropdown-toggle')
+				.dropdown()
 		}
 
 		can.stache.registerHelper(
@@ -127,7 +127,6 @@ steal(
 		,	function(dropdown, options) {
 				if(dropdown() instanceof can.Map)
 					return options.fn(this)
-
 			}
 		);
 
@@ -136,6 +135,7 @@ steal(
 				source: 	menuArray
 			,	mustache: 	"#menu_template"
 			,	dropdownFunction: dropdownFunc
+			,	routes: 	[":page",{"page":"home"}]
 			}
 		)
 

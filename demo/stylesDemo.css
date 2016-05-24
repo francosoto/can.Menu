@@ -22,9 +22,9 @@
 	height: 50px;
 }
 
-a.active, a.active:hover{
+/*a.active, a.active:hover{
 	background-color: #CCC !important;
-}
+}*/
 
 .navbar-nav a {
 	cursor:pointer;

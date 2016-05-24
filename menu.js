@@ -72,11 +72,16 @@ steal(
 					this._apply_dropdown()
 				}
 
-				// Ver si es necesario...
+				// i have a little routing system!! 
 			,	_initialize_routes: function() {
-					can.route(":menu")
-					can.route(":menu:sections")	
-					can.route.ready()
+					can.each(this.options.routes,function(item){
+						if(can.isPlainObject(item))
+							can.route("",item)
+						else if(typeof item == "string")
+							can.route(item)
+					});
+
+					can.route.ready();
 				}
 
 			,	_set_view: function() {
@@ -174,8 +179,7 @@ steal(
 				 * @param {Function(query)} Function to be evaluated.
 				 */
 
-			,	model: function(Model)
-				{
+			,	model: function(Model) {
 					Model()
 						.then(
 							can.proxy(this._set_options_array,this)
@@ -185,47 +189,71 @@ steal(
 			,	_set_actived: function($liActived) {
 					var	$element
 					=	this.element
-							.find('.navegable.active')
+							.find('.active .navegable')
 
 					if($element.data('route') != $liActived.data('route')) {
 						$element
+							.parent()
 							.removeClass('active')
 
 						$liActived
+							.parent()
 							.addClass('active') 
 					}
 				}
 
-			,	'.dropdown-toggle click': function(el,ev) {
+			,	'a.dropdown-toggle click': function(el,ev) {
+					console.log(el,ev)
 					if(!this.options.dropdownFunction)
-						this.element.find("ul.dropdown-menu")
-							.toggle()
+						el.find("ul.dropdown-menu")
+							.slideToggle('slow')
+							// .toggle()
 				}
 
-			,	'.navegable:not(.active) click': function(el,ev)
-				{
+			,	'.navegable:not(.active) click': function(el,ev) {
 			 		ev.preventDefault()
 			 		ev.stopPropagation()
 
 			 		this.change_link(el)
 					this._set_actived(el)
-
-					// can.$('.dropdown-toggle')
-
 				}
 
-			 ,	change_link: function(el)
+				// dropdown-menu -> defino los navegables así le meto la funcionalidad del route
+			,	'.dropdown-menu .navegable:not(".active") click': function(el,ev) {
+					ev.preventDefault()
+			 		ev.stopPropagation()
+
+			 		this.change_link(el)
+				}
+
+			,	change_link: function(el)
 			 	{
-			 		console.log(el,can.$(el).attr('data-route'))
-					if(this.options.routes)
-				 		can.route(
-				 			can.$(el).attr('data-route')
-				 		)
+			 		// console.log(el,can.$(el).attr('data-route'))
+				 	this.selectPatternRoute(can.$(el).attr('data-route'))
+					// if(this.options.routes)
+				 // 		can.route(
+				 // 		,	can.$(el).attr('data-route')
+				 // 		)
 			 	}
 
-			 ,	'{can.route} change': function(el,attr)
+			,	selectPatternRoute: function(dataRoute) {
+					var self = this
+
+					can.map(
+						dataRoute.split('/')
+					,	function(item,index){
+							console.log(item, index, self.options.routes)
+							return {page:self.options.routes[index], item: item}
+						}
+					)
+
+					// return dataRoute.split('/')
+				}
+
+			,	'{can.route} change': function(el,attr)
 			 	{
-			 		console.log(el,attr)
+			 		this.element
+			 			.trigger("changeRoute",attr)
 			 	}
 
 			// ,	'enable_modal.sigma.menu': function(el,ev)
@@ -238,16 +266,6 @@ steal(
 			// 	{
 			// 		this.disable_modal
 			// 		=	false
-			// 	}
-
-			// ,	'.submenu > .navegable:not(".active") click': function(el,ev)
-			// 	{
-			// 		ev.preventDefault()
-			// 		ev.stopPropagation()
-
-			// 		this.newRoute(
-			// 			can.$(el).attr('data-route')
-			// 		)
 			// 	}
 
 			// ,	toggleSubmenu: function(route)
