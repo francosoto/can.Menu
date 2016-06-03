@@ -9,29 +9,11 @@ steal(
 ,	'can/view'
 ,	function()
 	{
-		/**
-		 * @module {function} lib/menu/ <menu>
-		 * @parent can
-		 * @inherits can.Control
-		 */
 		can.Menu = can.Control.extend(
 			{
-				/**
-			 	 * @signature `<$input.menu(options={})>`
-				 * Creates a Menu control.
-				*/
 				pluginName:	'menu'
 			,	defaults:
 				{
-				/**
-				 * @param {{}} params A parameter object with the following options:
-				 * @option {Number} [minLength] The minimum character length needed before suggestions start getting rendered. Defaults to 3.
-				 * @option {String} [displayKey] The Item key to display. Defaults to name.
-				 * @option {Number} [timeout] The number of miliseconds to wait before requesting a suggestion. Defaults to 400.
-				 * @option {EJS|Mustache|Stache} [view] Menu view.
-				 * @option {Array|Object|function(query)} [source] Source data. Array of Objects, Array of Strings. Ajax Object or a function that shoudld return a deferred.
-				 * @option {Object} [query] Extra query to perfom on the request of suggestions.
-				*/
 					view:				undefined
 				,	mustache: 			undefined
 				,	routes: 			undefined
@@ -40,11 +22,6 @@ steal(
 				}
 			}
 		,	{
-				/**
-				 * Initilalize the menu plugin.
-				 * @param {node} HTML node element where the menu plugin will be initialized.
-				 * @param {object} Menu plugin options.
-				 */
 				init: function(element, options)
 				{
 					this.$menu
@@ -174,11 +151,6 @@ steal(
 					this._set_view()
 				}
 
-				/**
-				 *
-				 * @param {Function(query)} Function to be evaluated.
-				 */
-
 			,	model: function(Model) {
 					Model()
 						.then(
@@ -229,21 +201,28 @@ steal(
 			,	change_link: function(el)
 			 	{
 			 		// console.log(el,can.$(el).attr('data-route'))
-				 	this.selectPatternRoute(can.$(el).attr('data-route'))
-					// if(this.options.routes)
-				 // 		can.route(
-				 // 		,	can.$(el).attr('data-route')
-				 // 		)
+				 	let route = this.selectPatternRoute(can.$(el).attr('data-route'))
+				 	// console.log(route)
+					if(route)
+						can.each(
+							route
+						,	function(rt) {
+						 		can.route(
+						 			rt.pattern
+						 		,	rt.item
+						 		)
+							}
+						)
 			 	}
 
 			,	selectPatternRoute: function(dataRoute) {
 					var self = this
-
-					can.map(
+					// console.log(dataRoute.split('/'))
+					return can.map(
 						dataRoute.split('/')
 					,	function(item,index){
-							console.log(item, index, self.options.routes)
-							return {page:self.options.routes[index], item: item}
+							// console.log(item, index, self.options.routes)
+							return {pattern:self.options.routes[index].replace(':',''), item: item}
 						}
 					)
 
